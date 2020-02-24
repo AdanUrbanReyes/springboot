@@ -30,3 +30,12 @@ spring:
 #  cloud:
 #    config:
 #      uri: http://localhost:8888
+# with next command you could register and unregister certificates in JAVA using keytool from java
+#register
+#keytool -import -alias spring-cloud-config-server -keystore $JAVA_HOME/jre/lib/security/cacerts -file /home/ayan/Documents/certs/spring-cloud-config-server.pem
+#unregister
+#keytool -delete -alias spring-cloud-config-server -keystore $JAVA_HOME/jre/lib/security/cacerts
+#see all certificates register in the JAVA cacerts
+#keytool -list -v -keystore $JAVA_HOME/jre/lib/security/cacerts
+#run app specifying ssl
+#java -Djavax.net.debug=ssl -Djavax.net.ssl.trustStore=$JAVA_HOME/jre/lib/security/cacerts -Djavax.net.ssl.trustStorePassword=changeit -jar target/spring-boot-config-client-0.0.1.jar
