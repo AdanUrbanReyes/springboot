@@ -1,0 +1,23 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/config/{profile}.git
+          searchPaths: '{application}'
+          username: user
+          password: password
+          skipSslValidation: true
+#A little explanation about git configs.
+#we create a group on github called config and inside of it we will put all the profiles we need
+#(dev, qa, prod, ..., etc. The profiles in git are repositories; inside of a group)
+#inside of each profile we create directories which will represent the projects
+#that will consume this server configuration and finally inside of each project we will have our
+#application.properties, application-dev.profile etc files.
+# That's why the uri property value is https://github.com/CONFIG/{PROFILE}.git
+# and the serchPaths value is {APPLICATION}
+#{profile} and {application} are variables that the client needs to passed
+#you can call the server by using
+#http://{IP WHERE IS RUNNING THE SERVER }:{PORT WHERE IS RUNNING THE SERVER}/{APPLICATION}/{PROFILE}/
