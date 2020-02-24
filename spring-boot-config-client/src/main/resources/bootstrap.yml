@@ -1,0 +1,32 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, env, metrics, beans, mappings, refresh
+
+spring:
+  application:
+    name: spring-boot-config-client
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: http://localhost:8888
+
+#A little explanation about spring could configs.
+#we are using the project spring-boot-config-server (https://github.com/AdanUrbanReyes/springboot/tree/master/spring-boot-config-server)
+#as the server  project specify as a client you have to passed an APPLICATION name, and a PROFILE you are working.
+#and we are passing those in the
+#spring:
+  #application:
+    #name: spring-boot-config-client
+# in the before configuration we are specifying APPLICATION and
+#spring:
+#  profiles:
+#    active: dev
+# and in the before configuration we are specifying the PROFILE
+# finally we specify the uri where the server config lives
+#spring:
+#  cloud:
+#    config:
+#      uri: http://localhost:8888
