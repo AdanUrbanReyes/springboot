@@ -1,0 +1,3 @@
+INSERT INTO APPLICATION (ID,NAME,CREATION) values (3,'preffered-seats',to_date('2020-04-08 10:43:07','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO APPLICATION (ID,NAME,CREATION) values (1,'sabre-prism-data',to_date('2020-04-07 18:41:22','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO APPLICATION (ID,NAME,CREATION) values (2,'am-plus-inventory',to_date('2020-04-07 18:41:47','YYYY-MM-DD HH24:MI:SS'));
