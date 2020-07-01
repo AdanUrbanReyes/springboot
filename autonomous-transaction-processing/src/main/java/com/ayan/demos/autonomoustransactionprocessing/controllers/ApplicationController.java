@@ -23,11 +23,15 @@ public class ApplicationController {
     @Autowired
     private ApplicationRepository applicationRepository;
 
+    @Value("${drop-me}")
+    private String dropMe;
+
     @GetMapping(path = "find-all"
             , produces = {MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"})
     public ResponseEntity<List<Application>> findAll() {
         List<Application> as = applicationRepository.findAll();
         as.forEach(a -> log.info(a.toString()));
+        log.info(dropMe);
         return ResponseEntity.ok(as);
     }
 
