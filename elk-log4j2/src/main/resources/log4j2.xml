@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Configuration>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%c{1}][%M][%level][%L][%msg]%n"/>
+        </Console>
+        <RollingFile name="files"
+                     fileName="${sys:java.io.tmpdir}${sys:file.separator}LOGs${sys:file.separator}elk-log4j2.log"
+                     filePattern="${sys:java.io.tmpdir}${sys:file.separator}LOGs${sys:file.separator}elk-log4j2%d{yyyy-MM-dd}.log">
+            <PatternLayout
+                    pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%c{1}][%M][%level][%L][%msg]%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"
+                                           modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <JDBC name="database" tableName="logger_java">
+            <DriverManager connectionString="jdbc:postgresql://postgresql:5432/microservices"
+                           driverClassName="org.postgresql.Driver"
+                           username="log4j2"
+                           password="$2a$10$sDF6wZLLjh9Etp/UyjBo9.Pjl0mNwm16lbQqn6JRlSiVwJL0PH3/q"/>
+            <Column name="application" literal="2" isUnicode="false"/>
+            <Column name="class" pattern="%c{1}" isUnicode="false"/>
+            <Column name="method" pattern="%M" isUnicode="false"/>
+            <ColumnMapping name="line" pattern="%L" type="java.lang.Integer"/>
+            <ColumnMapping name="level" pattern="%level{Trace=1,Debug=2,Info=3,Warn=4,Error=5,Fatal=6}"
+                           type="java.lang.Byte"/>
+            <Column name="creation" isEventTimestamp="true"/>
+            <Column name="log" pattern="%msg" isUnicode="false"/>
+        </JDBC>
+        <Gelf name="elk"
+              host="tcp:gelf"
+              port="12201"
+              version="1.0"
+              extractStackTrace="true"
+              filterStackTrace="true"
+              mdcProfiling="true"
+              includeFullMdc="true"
+              maximumMessageSize="8192"
+              originHost="%host"
+              ignoreExceptions="true">
+            <Field name="application" literal="1"/>
+            <Field name="class" pattern="%c{1}"/>
+            <Field name="method" pattern="%M"/>
+            <Field name="line" pattern="%L"/>
+            <Field name="level" pattern="%level"/>
+            <Field name="creation" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}"/>
+        </Gelf>
+    </Appenders>
+    <Loggers>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="elk"/>
+        </Root>
+    </Loggers>
+</Configuration>
